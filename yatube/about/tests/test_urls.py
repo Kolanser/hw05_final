@@ -13,7 +13,6 @@ class AboutURLTests(TestCase):
         }
 
     def setUp(self):
-        # Создаем неавторизованый клиент
         self.guest_client = Client()
 
     def test_static_pages_exists_at_desired_location(self):

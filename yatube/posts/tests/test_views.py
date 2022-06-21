@@ -57,8 +57,8 @@ class PostViewTests(TestCase):
             content=cls.small_gif,
             content_type='image/gif'
         )
-        # список объектов Post для БД
         cls.user_1 = User.objects.create_user(username='auth_1')
+        # список объектов Post для БД
         objs = []
         for i in range(1, PostViewTests.COUNT_OF_REC + 1):
             objs.append(
@@ -316,7 +316,6 @@ class PostViewTests(TestCase):
             kwargs={'post_id': PostViewTests.post.id}
         ))
         changed_post = Post.objects.get(id=self.post.id)
-        # self.assertEqual(Post.objects.count(), self.posts_count)
         self.assertEqual(changed_post.text, changed_text)
 
     def test_cache_index_page(self):
