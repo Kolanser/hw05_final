@@ -48,14 +48,11 @@ def profile(request, username):
 def post_detail(request, post_id):
     """Информация о посте"""
     post = get_object_or_404(Post, id=post_id)
-    is_edit: bool = False
-    if post.author == request.user:
-        is_edit = True
     form = CommentForm()
     comments = post.comments.all()
     context = {
         'post': post,
-        'is_edit': is_edit,
+        'is_edit': post.author == request.user,
         'form': form,
         'comments': comments
     }
@@ -134,7 +131,7 @@ def profile_follow(request, username):
     """Подписаться на автора"""
     author = get_object_or_404(User, username=username)
     if (
-        (request.user != author)
+        request.user != author
         and (
             not Follow.objects.filter(
                 user=request.user,

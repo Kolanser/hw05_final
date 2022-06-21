@@ -104,7 +104,7 @@ class Follow(models.Model):
         on_delete=models.CASCADE,
         related_name='follower',
         verbose_name='Пользователь',
-        help_text='Пользователь, который подписывается'
+        help_text='Пользователь, который подписывается',
     )
     author = models.ForeignKey(
         User,
@@ -113,6 +113,18 @@ class Follow(models.Model):
         verbose_name='Целевой пользователь',
         help_text='Пользователь, на которого подписываются'
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                name='unique_follows',
+                fields=['user', 'author'],
+            ),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F('author')),
+                name='non_self_follow'
+            )
+        ]
 
     def __str__(self):
         return self.user.username

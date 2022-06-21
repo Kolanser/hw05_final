@@ -369,8 +369,8 @@ class PostViewTests(TestCase):
                     'Ошибка передачи контекста в follow'
                 )
 
-    def test_profile_follow_and_unfollow(self):
-        """Проверка подписки на автора и отписки"""
+    def test_profile_follow(self):
+        """Проверка подписки на автора"""
         self.authorized_client_without_post.get(
             reverse(
                 'posts:profile_follow',
@@ -382,6 +382,13 @@ class PostViewTests(TestCase):
                 user=PostViewTests.user_1, author=PostViewTests.user
             ).exists(),
             'Подписка не осуществляется'
+        )
+
+    def test_profile_unfollow(self):
+        """Проверка отписки от автора"""
+        Follow.objects.create(
+            user=PostViewTests.user_1,
+            author=PostViewTests.user
         )
         self.authorized_client_without_post.get(
             reverse(
