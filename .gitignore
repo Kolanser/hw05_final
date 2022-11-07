@@ -149,4 +149,4 @@ dmypy.json
 
 yatube/media/*
 
-**/*.zip
+./*.zip
