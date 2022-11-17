@@ -150,3 +150,5 @@ yatube/media/
 
 # zip
 *.zip
+
+dump.json
