@@ -11,7 +11,9 @@ from .utils import paginate_page
 @cache_page(20, key_prefix='index_page')
 def index(request):
     """Главная страница сайта"""
-    page_obj = paginate_page(request, Post.objects.all())
+    page_obj = paginate_page(
+        request, Post.objects.select_related('group', 'author').all()
+    )
     context = {
         'page_obj': page_obj,
     }
@@ -21,7 +23,9 @@ def index(request):
 def group_posts(request, slug):
     """Посты группы"""
     group = get_object_or_404(Group, slug=slug)
-    page_obj = paginate_page(request, group.posts.all())
+    page_obj = paginate_page(
+        request, group.posts.select_related('author').all()
+    )
     context = {
         'group': group,
         'page_obj': page_obj,
@@ -32,7 +36,9 @@ def group_posts(request, slug):
 def profile(request, username):
     """Посты профиля"""
     author = get_object_or_404(User, username=username)
-    page_obj = paginate_page(request, author.posts.all())
+    page_obj = paginate_page(
+        request, author.posts.select_related('group').all()
+    )
     following = (
         request.user.is_authenticated
         and Follow.objects.filter(user=request.user, author=author).exists()
